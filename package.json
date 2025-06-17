@@ -1,5 +1,5 @@
 {
-  "name": "@trinuro/publish-js-file-to-GHPackage",
+  "name": "@trinuro/publish-js-file-to-ghpackage",
   "version": "1.0.0", 
   "description": "Test GH Package",
   "main": "index.js",
