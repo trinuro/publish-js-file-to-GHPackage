@@ -36,7 +36,7 @@ jobs:
         with:
           node-version: '20'
           registry-url: 'https://npm.pkg.github.com'
-          scope: @trinuro # specify scope
+          #scope: \@trinuro # specify scope
       - name: Create npmrc
         run: echo "@trinuro:registry=https://npm.pkg.github.com" >> .npmrc
       - name: Publish our package
