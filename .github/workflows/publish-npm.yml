@@ -1,45 +1,33 @@
 name: Publish to GH Package
-on: workflow_dispatch
-jobs:
-  build-and-package:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v4
-      - name: Set up Node JS
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Install dependencies
-        run: npm install
-      #- name: Build Package
-       # run: babel src -d dist
-      - name: Package the app
-        run: npm pack 
-      - name: Create artifact for the next jobs
-        uses: actions/upload-artifact@v4
-        with:
-          name: tar file of my app
-          path: "*.tgz" # anything ending with .tgz
 
+on:
+  push:
+    branches:
+      - main
+
+jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    needs: build-and-package # need to wait for job 1
+
     steps:
-      - name: Download package
-        uses: actions/download-artifact@v4
-      - name: Set up Node JS
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up NPM 
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           registry-url: 'https://npm.pkg.github.com'
-          #scope: \@trinuro # specify scope
-      - name: Create npmrc
-        run: echo "@trinuro:registry=https://npm.pkg.github.com" >> .npmrc
-      - name: Publish our package
-        run: npm publish trinuro-publish-js-file-to-GHPackage-1.0.0.tgz
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create npm package tarball
+        run: npm pack
+
+      - name: Publish npm package
+        permissions:
+          contents: read
+          packages: write
         env:
-          NPM_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}} # Used to authenticate to the NPM registry
+          NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish $(ls *.tgz)
