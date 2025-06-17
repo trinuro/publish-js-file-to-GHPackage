@@ -1,4 +1,4 @@
-name: deploy-with-cache
+name: deploy-without-cache
 
 on: workflow_dispatch
 
@@ -12,8 +12,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
       - name: Install dependency
         run: npm install && npm ci
   job2:
@@ -25,8 +23,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
       - name: Install dependency
         run: npm install && npm ci
   job3:
@@ -38,7 +34,5 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
       - name: Install dependency
         run: npm install && npm ci
